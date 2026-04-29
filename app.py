@@ -9,13 +9,21 @@ from src.feedback import render_feedback_form
 st.set_page_config(page_title="Bakery AI - Production Planner", layout="wide")
 st.title("🥖 Bakery AI — Production Planner")
 
+# Initialize session state for forecast persistence
+if 'forecast_generated' not in st.session_state:
+    st.session_state.forecast_generated = False
+if 'forecast_df' not in st.session_state:
+    st.session_state.forecast_df = None
+if 'clean_df' not in st.session_state:
+    st.session_state.clean_df = None
+
 # Create tabs
 tab1, tab2 = st.tabs(["📊 Generate Forecast", "📝 Log Today's Results"])
 
 with tab1:
     st.write("Upload your POS export. Get tomorrow's production plan.")
     
-    uploaded_file = st.file_uploader("Upload POS CSV", type=["csv"])
+    uploaded_file = st.file_uploader("Upload POS CSV", type=["csv"], key="csv_uploader")
     
     if uploaded_file is not None:
         raw_df = pd.read_csv(uploaded_file)
@@ -28,6 +36,7 @@ with tab1:
                 st.success(f"✅ File received: `{uploaded_file.name}` — {len(raw_df):,} rows detected")
         
         clean_df = clean_pos_data(raw_df)
+        st.session_state.clean_df = clean_df
         
         st.subheader("Preview (Cleaned Data)")
         st.dataframe(clean_df.head(10))
@@ -38,10 +47,16 @@ with tab1:
                 
                 if models_trained == 0:
                     st.error("Not enough data to train models. Need at least 5 days of sales per product.")
+                    st.session_state.forecast_generated = False
                 else:
                     st.success(f"✅ Trained {models_trained} product-store models")
                     forecast_df = generate_forecast(clean_df)
-                    render_production_plan(forecast_df)
+                    st.session_state.forecast_df = forecast_df
+                    st.session_state.forecast_generated = True
+    
+    # Show forecast if already generated (persists across widget interactions)
+    if st.session_state.forecast_generated and st.session_state.forecast_df is not None:
+        render_production_plan(st.session_state.forecast_df)
 
 with tab2:
     render_feedback_form()
