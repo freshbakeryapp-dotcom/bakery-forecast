@@ -1,0 +1,31 @@
+date,store,product,quantity_sold,unit_price
+2026-01-01,Gadong,Sourdough loaf,38,4.50
+2026-01-01,Gadong,Butter croissant,55,2.80
+2026-01-01,Gadong,Kuih lapis,42,1.50
+2026-01-01,Gadong,Chicken pie,31,3.20
+2026-01-01,Gadong,Baguette,25,3.00
+2026-01-01,Kiulap,Sourdough loaf,29,4.50
+2026-01-01,Kiulap,Butter croissant,44,2.80
+2026-01-01,Kiulap,Kuih lapis,38,1.50
+2026-01-01,Kiulap,Chicken pie,27,3.20
+2026-01-01,Kiulap,Baguette,19,3.00
+2026-01-02,Gadong,Sourdough loaf,40,4.50
+2026-01-02,Gadong,Butter croissant,58,2.80
+2026-01-02,Gadong,Kuih lapis,45,1.50
+2026-01-02,Gadong,Chicken pie,33,3.20
+2026-01-02,Gadong,Baguette,28,3.00
+2026-01-02,Kiulap,Sourdough loaf,31,4.50
+2026-01-02,Kiulap,Butter croissant,47,2.80
+2026-01-02,Kiulap,Kuih lapis,40,1.50
+2026-01-02,Kiulap,Chicken pie,29,3.20
+2026-01-02,Kiulap,Baguette,21,3.00
+2026-01-03,Gadong,Sourdough loaf,42,4.50
+2026-01-03,Gadong,Butter croissant,61,2.80
+2026-01-03,Gadong,Kuih lapis,48,1.50
+2026-01-03,Gadong,Chicken pie,35,3.20
+2026-01-03,Gadong,Baguette,30,3.00
+2026-01-03,Kiulap,Sourdough loaf,33,4.50
+2026-01-03,Kiulap,Butter croissant,50,2.80
+2026-01-03,Kiulap,Kuih lapis,43,1.50
+2026-01-03,Kiulap,Chicken pie,30,3.20
+2026-01-03,Kiulap,Baguette,23,3.00
