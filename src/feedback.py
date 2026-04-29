@@ -9,7 +9,6 @@ def render_feedback_form():
     st.subheader("📝 End-of-Day Sales & Waste Log")
     st.write("Log what actually happened today to improve tomorrow's forecast.")
     
-    # Load today's production log (what was baked this morning)
     production_log_path = "data/logs/production_log.csv"
     
     if not os.path.exists(production_log_path):
@@ -18,13 +17,19 @@ def render_feedback_form():
     
     production_df = pd.read_csv(production_log_path)
     
-    # Filter to today's entries
+    # Filter to today's entries only — and deduplicate by taking latest per product per store
     today = datetime.now().strftime('%Y-%m-%d')
     today_production = production_df[production_df['date'] == today]
     
     if today_production.empty:
-        st.info(f"No production log for today ({today}). Check back after you've saved a production plan.")
+        st.info(f"No production log for today ({today}). Check back after you've saved a production plan for today.")
         return
+    
+    # Keep only the most recent entry per store+product for today
+    today_production = today_production.drop_duplicates(subset=['store', 'product'], keep='last')
+    
+    # Create a running index to ensure unique keys
+    counter = 0
     
     # Group by store
     for store in sorted(today_production['store'].unique()):
@@ -32,7 +37,6 @@ def render_feedback_form():
         
         st.markdown(f"### 📍 {store}")
         
-        # Columns for data entry
         cols = st.columns([2, 1, 1, 1])
         cols[0].markdown("**Product**")
         cols[1].markdown("**Baked This Morning**")
@@ -43,8 +47,8 @@ def render_feedback_form():
         
         for _, row in store_df.iterrows():
             product = row['product']
-            baked = row['baker_override']
-            key = f"feedback_{store}_{product}"
+            baked = int(row['baker_override'])
+            counter += 1  # Unique counter for every widget
             
             cols = st.columns([2, 1, 1, 1])
             cols[0].write(product)
@@ -56,7 +60,7 @@ def render_feedback_form():
                 min_value=0,
                 max_value=baked,
                 step=1,
-                key=f"sold_{key}",
+                key=f"sold_{counter}",
                 label_visibility="collapsed"
             )
             
@@ -66,7 +70,7 @@ def render_feedback_form():
                 min_value=0,
                 max_value=baked,
                 step=1,
-                key=f"wasted_{key}",
+                key=f"wasted_{counter}",
                 label_visibility="collapsed"
             )
             
@@ -74,14 +78,13 @@ def render_feedback_form():
                 'date': today,
                 'store': store,
                 'product': product,
-                'ai_recommended': row['ai_recommended'],
+                'ai_recommended': int(row['ai_recommended']),
                 'baker_baked': baked,
                 'actually_sold': sold,
                 'wasted': wasted
             })
         
-        # Save button per store
-        if st.button(f"💾 Log {store} Sales & Waste", key=f"save_feedback_{store}"):
+        if st.button(f"💾 Log {store} Sales & Waste", key=f"save_feedback_{store}_{counter}"):
             save_feedback(feedback_data)
             st.success(f"✅ Logged today's data for {store}.")
     
@@ -102,7 +105,6 @@ def render_feedback_form():
             col2.metric("Total Sold", f"{total_sold:,}")
             col3.metric("Waste Rate", f"{waste_rate:.1f}%")
             
-            # AI vs Baker comparison
             st.markdown("#### Would AI Have Wasted Less?")
             
             ai_waste_estimate = (compare_df['ai_recommended'] - compare_df['actually_sold']).clip(lower=0).sum()
