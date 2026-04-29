@@ -1,31 +1,436 @@
 date,store,product,quantity_sold,unit_price
-2026-01-01,Gadong,Sourdough loaf,38,4.50
-2026-01-01,Gadong,Butter croissant,55,2.80
-2026-01-01,Gadong,Kuih lapis,42,1.50
-2026-01-01,Gadong,Chicken pie,31,3.20
-2026-01-01,Gadong,Baguette,25,3.00
-2026-01-01,Kiulap,Sourdough loaf,29,4.50
-2026-01-01,Kiulap,Butter croissant,44,2.80
-2026-01-01,Kiulap,Kuih lapis,38,1.50
-2026-01-01,Kiulap,Chicken pie,27,3.20
-2026-01-01,Kiulap,Baguette,19,3.00
-2026-01-02,Gadong,Sourdough loaf,40,4.50
-2026-01-02,Gadong,Butter croissant,58,2.80
-2026-01-02,Gadong,Kuih lapis,45,1.50
-2026-01-02,Gadong,Chicken pie,33,3.20
-2026-01-02,Gadong,Baguette,28,3.00
-2026-01-02,Kiulap,Sourdough loaf,31,4.50
-2026-01-02,Kiulap,Butter croissant,47,2.80
-2026-01-02,Kiulap,Kuih lapis,40,1.50
-2026-01-02,Kiulap,Chicken pie,29,3.20
-2026-01-02,Kiulap,Baguette,21,3.00
-2026-01-03,Gadong,Sourdough loaf,42,4.50
-2026-01-03,Gadong,Butter croissant,61,2.80
-2026-01-03,Gadong,Kuih lapis,48,1.50
-2026-01-03,Gadong,Chicken pie,35,3.20
-2026-01-03,Gadong,Baguette,30,3.00
-2026-01-03,Kiulap,Sourdough loaf,33,4.50
-2026-01-03,Kiulap,Butter croissant,50,2.80
-2026-01-03,Kiulap,Kuih lapis,43,1.50
-2026-01-03,Kiulap,Chicken pie,30,3.20
-2026-01-03,Kiulap,Baguette,23,3.00
+2026-03-01,Gadong,Sourdough loaf,38,4.50
+2026-03-01,Gadong,Butter croissant,55,2.80
+2026-03-01,Gadong,Kuih lapis,42,1.50
+2026-03-01,Gadong,Chicken pie,31,3.20
+2026-03-01,Gadong,Baguette,25,3.00
+2026-03-01,Kiulap,Sourdough loaf,29,4.50
+2026-03-01,Kiulap,Butter croissant,44,2.80
+2026-03-01,Kiulap,Kuih lapis,38,1.50
+2026-03-01,Kiulap,Chicken pie,27,3.20
+2026-03-01,Kiulap,Baguette,19,3.00
+2026-03-01,Seria,Sourdough loaf,22,4.50
+2026-03-01,Seria,Butter croissant,31,2.80
+2026-03-01,Seria,Kuih lapis,28,1.50
+2026-03-01,Seria,Chicken pie,19,3.20
+2026-03-01,Seria,Baguette,14,3.00
+2026-03-02,Gadong,Sourdough loaf,40,4.50
+2026-03-02,Gadong,Butter croissant,58,2.80
+2026-03-02,Gadong,Kuih lapis,45,1.50
+2026-03-02,Gadong,Chicken pie,33,3.20
+2026-03-02,Gadong,Baguette,28,3.00
+2026-03-02,Kiulap,Sourdough loaf,31,4.50
+2026-03-02,Kiulap,Butter croissant,47,2.80
+2026-03-02,Kiulap,Kuih lapis,40,1.50
+2026-03-02,Kiulap,Chicken pie,29,3.20
+2026-03-02,Kiulap,Baguette,21,3.00
+2026-03-02,Seria,Sourdough loaf,24,4.50
+2026-03-02,Seria,Butter croissant,33,2.80
+2026-03-02,Seria,Kuih lapis,30,1.50
+2026-03-02,Seria,Chicken pie,21,3.20
+2026-03-02,Seria,Baguette,16,3.00
+2026-03-03,Gadong,Sourdough loaf,42,4.50
+2026-03-03,Gadong,Butter croissant,61,2.80
+2026-03-03,Gadong,Kuih lapis,48,1.50
+2026-03-03,Gadong,Chicken pie,35,3.20
+2026-03-03,Gadong,Baguette,30,3.00
+2026-03-03,Kiulap,Sourdough loaf,33,4.50
+2026-03-03,Kiulap,Butter croissant,50,2.80
+2026-03-03,Kiulap,Kuih lapis,43,1.50
+2026-03-03,Kiulap,Chicken pie,30,3.20
+2026-03-03,Kiulap,Baguette,23,3.00
+2026-03-03,Seria,Sourdough loaf,26,4.50
+2026-03-03,Seria,Butter croissant,35,2.80
+2026-03-03,Seria,Kuih lapis,32,1.50
+2026-03-03,Seria,Chicken pie,23,3.20
+2026-03-03,Seria,Baguette,18,3.00
+2026-03-04,Gadong,Sourdough loaf,36,4.50
+2026-03-04,Gadong,Butter croissant,52,2.80
+2026-03-04,Gadong,Kuih lapis,40,1.50
+2026-03-04,Gadong,Chicken pie,29,3.20
+2026-03-04,Gadong,Baguette,24,3.00
+2026-03-04,Kiulap,Sourdough loaf,28,4.50
+2026-03-04,Kiulap,Butter croissant,42,2.80
+2026-03-04,Kiulap,Kuih lapis,36,1.50
+2026-03-04,Kiulap,Chicken pie,25,3.20
+2026-03-04,Kiulap,Baguette,18,3.00
+2026-03-04,Seria,Sourdough loaf,21,4.50
+2026-03-04,Seria,Butter croissant,29,2.80
+2026-03-04,Seria,Kuih lapis,26,1.50
+2026-03-04,Seria,Chicken pie,18,3.20
+2026-03-04,Seria,Baguette,13,3.00
+2026-03-05,Gadong,Sourdough loaf,45,4.50
+2026-03-05,Gadong,Butter croissant,65,2.80
+2026-03-05,Gadong,Kuih lapis,52,1.50
+2026-03-05,Gadong,Chicken pie,38,3.20
+2026-03-05,Gadong,Baguette,32,3.00
+2026-03-05,Kiulap,Sourdough loaf,35,4.50
+2026-03-05,Kiulap,Butter croissant,53,2.80
+2026-03-05,Kiulap,Kuih lapis,46,1.50
+2026-03-05,Kiulap,Chicken pie,32,3.20
+2026-03-05,Kiulap,Baguette,25,3.00
+2026-03-05,Seria,Sourdough loaf,28,4.50
+2026-03-05,Seria,Butter croissant,37,2.80
+2026-03-05,Seria,Kuih lapis,34,1.50
+2026-03-05,Seria,Chicken pie,24,3.20
+2026-03-05,Seria,Baguette,19,3.00
+2026-03-07,Gadong,Sourdough loaf,50,4.50
+2026-03-07,Gadong,Butter croissant,72,2.80
+2026-03-07,Gadong,Kuih lapis,58,1.50
+2026-03-07,Gadong,Chicken pie,42,3.20
+2026-03-07,Gadong,Baguette,35,3.00
+2026-03-07,Kiulap,Sourdough loaf,39,4.50
+2026-03-07,Kiulap,Butter croissant,59,2.80
+2026-03-07,Kiulap,Kuih lapis,50,1.50
+2026-03-07,Kiulap,Chicken pie,36,3.20
+2026-03-07,Kiulap,Baguette,28,3.00
+2026-03-07,Seria,Sourdough loaf,31,4.50
+2026-03-07,Seria,Butter croissant,41,2.80
+2026-03-07,Seria,Kuih lapis,38,1.50
+2026-03-07,Seria,Chicken pie,27,3.20
+2026-03-07,Seria,Baguette,21,3.00
+2026-03-08,Gadong,Sourdough loaf,41,4.50
+2026-03-08,Gadong,Butter croissant,59,2.80
+2026-03-08,Gadong,Kuih lapis,46,1.50
+2026-03-08,Gadong,Chicken pie,34,3.20
+2026-03-08,Gadong,Baguette,29,3.00
+2026-03-08,Kiulap,Sourdough loaf,32,4.50
+2026-03-08,Kiulap,Butter croissant,48,2.80
+2026-03-08,Kiulap,Kuih lapis,41,1.50
+2026-03-08,Kiulap,Chicken pie,28,3.20
+2026-03-08,Kiulap,Baguette,22,3.00
+2026-03-08,Seria,Sourdough loaf,25,4.50
+2026-03-08,Seria,Butter croissant,34,2.80
+2026-03-08,Seria,Kuih lapis,31,1.50
+2026-03-08,Seria,Chicken pie,20,3.20
+2026-03-08,Seria,Baguette,16,3.00
+2026-03-09,Gadong,Sourdough loaf,43,4.50
+2026-03-09,Gadong,Butter croissant,63,2.80
+2026-03-09,Gadong,Kuih lapis,50,1.50
+2026-03-09,Gadong,Chicken pie,37,3.20
+2026-03-09,Gadong,Baguette,31,3.00
+2026-03-09,Kiulap,Sourdough loaf,34,4.50
+2026-03-09,Kiulap,Butter croissant,52,2.80
+2026-03-09,Kiulap,Kuih lapis,45,1.50
+2026-03-09,Kiulap,Chicken pie,31,3.20
+2026-03-09,Kiulap,Baguette,24,3.00
+2026-03-09,Seria,Sourdough loaf,27,4.50
+2026-03-09,Seria,Butter croissant,36,2.80
+2026-03-09,Seria,Kuih lapis,33,1.50
+2026-03-09,Seria,Chicken pie,22,3.20
+2026-03-09,Seria,Baguette,17,3.00
+2026-03-10,Gadong,Sourdough loaf,39,4.50
+2026-03-10,Gadong,Butter croissant,57,2.80
+2026-03-10,Gadong,Kuih lapis,44,1.50
+2026-03-10,Gadong,Chicken pie,32,3.20
+2026-03-10,Gadong,Baguette,27,3.00
+2026-03-10,Kiulap,Sourdough loaf,30,4.50
+2026-03-10,Kiulap,Butter croissant,46,2.80
+2026-03-10,Kiulap,Kuih lapis,39,1.50
+2026-03-10,Kiulap,Chicken pie,27,3.20
+2026-03-10,Kiulap,Baguette,20,3.00
+2026-03-10,Seria,Sourdough loaf,23,4.50
+2026-03-10,Seria,Butter croissant,32,2.80
+2026-03-10,Seria,Kuih lapis,29,1.50
+2026-03-10,Seria,Chicken pie,19,3.20
+2026-03-10,Seria,Baguette,15,3.00
+2026-03-11,Gadong,Sourdough loaf,37,4.50
+2026-03-11,Gadong,Butter croissant,54,2.80
+2026-03-11,Gadong,Kuih lapis,41,1.50
+2026-03-11,Gadong,Chicken pie,30,3.20
+2026-03-11,Gadong,Baguette,26,3.00
+2026-03-11,Kiulap,Sourdough loaf,29,4.50
+2026-03-11,Kiulap,Butter croissant,43,2.80
+2026-03-11,Kiulap,Kuih lapis,37,1.50
+2026-03-11,Kiulap,Chicken pie,25,3.20
+2026-03-11,Kiulap,Baguette,19,3.00
+2026-03-11,Seria,Sourdough loaf,22,4.50
+2026-03-11,Seria,Butter croissant,30,2.80
+2026-03-11,Seria,Kuih lapis,27,1.50
+2026-03-11,Seria,Chicken pie,18,3.20
+2026-03-11,Seria,Baguette,14,3.00
+2026-03-12,Gadong,Sourdough loaf,44,4.50
+2026-03-12,Gadong,Butter croissant,64,2.80
+2026-03-12,Gadong,Kuih lapis,51,1.50
+2026-03-12,Gadong,Chicken pie,36,3.20
+2026-03-12,Gadong,Baguette,30,3.00
+2026-03-12,Kiulap,Sourdough loaf,34,4.50
+2026-03-12,Kiulap,Butter croissant,52,2.80
+2026-03-12,Kiulap,Kuih lapis,44,1.50
+2026-03-12,Kiulap,Chicken pie,30,3.20
+2026-03-12,Kiulap,Baguette,23,3.00
+2026-03-12,Seria,Sourdough loaf,27,4.50
+2026-03-12,Seria,Butter croissant,36,2.80
+2026-03-12,Seria,Kuih lapis,32,1.50
+2026-03-12,Seria,Chicken pie,22,3.20
+2026-03-12,Seria,Baguette,17,3.00
+2026-03-13,Gadong,Sourdough loaf,46,4.50
+2026-03-13,Gadong,Butter croissant,68,2.80
+2026-03-13,Gadong,Kuih lapis,55,1.50
+2026-03-13,Gadong,Chicken pie,40,3.20
+2026-03-13,Gadong,Baguette,33,3.00
+2026-03-13,Kiulap,Sourdough loaf,36,4.50
+2026-03-13,Kiulap,Butter croissant,55,2.80
+2026-03-13,Kiulap,Kuih lapis,48,1.50
+2026-03-13,Kiulap,Chicken pie,33,3.20
+2026-03-13,Kiulap,Baguette,26,3.00
+2026-03-13,Seria,Sourdough loaf,29,4.50
+2026-03-13,Seria,Butter croissant,39,2.80
+2026-03-13,Seria,Kuih lapis,35,1.50
+2026-03-13,Seria,Chicken pie,24,3.20
+2026-03-13,Seria,Baguette,19,3.00
+2026-03-14,Gadong,Sourdough loaf,52,4.50
+2026-03-14,Gadong,Butter croissant,75,2.80
+2026-03-14,Gadong,Kuih lapis,60,1.50
+2026-03-14,Gadong,Chicken pie,44,3.20
+2026-03-14,Gadong,Baguette,37,3.00
+2026-03-14,Kiulap,Sourdough loaf,41,4.50
+2026-03-14,Kiulap,Butter croissant,62,2.80
+2026-03-14,Kiulap,Kuih lapis,53,1.50
+2026-03-14,Kiulap,Chicken pie,37,3.20
+2026-03-14,Kiulap,Baguette,29,3.00
+2026-03-14,Seria,Sourdough loaf,33,4.50
+2026-03-14,Seria,Butter croissant,44,2.80
+2026-03-14,Seria,Kuih lapis,39,1.50
+2026-03-14,Seria,Chicken pie,28,3.20
+2026-03-14,Seria,Baguette,22,3.00
+2026-03-15,Gadong,Sourdough loaf,40,4.50
+2026-03-15,Gadong,Butter croissant,58,2.80
+2026-03-15,Gadong,Kuih lapis,46,1.50
+2026-03-15,Gadong,Chicken pie,34,3.20
+2026-03-15,Gadong,Baguette,28,3.00
+2026-03-15,Kiulap,Sourdough loaf,31,4.50
+2026-03-15,Kiulap,Butter croissant,47,2.80
+2026-03-15,Kiulap,Kuih lapis,40,1.50
+2026-03-15,Kiulap,Chicken pie,28,3.20
+2026-03-15,Kiulap,Baguette,21,3.00
+2026-03-15,Seria,Sourdough loaf,24,4.50
+2026-03-15,Seria,Butter croissant,33,2.80
+2026-03-15,Seria,Kuih lapis,30,1.50
+2026-03-15,Seria,Chicken pie,20,3.20
+2026-03-15,Seria,Baguette,15,3.00
+2026-03-16,Gadong,Sourdough loaf,42,4.50
+2026-03-16,Gadong,Butter croissant,61,2.80
+2026-03-16,Gadong,Kuih lapis,49,1.50
+2026-03-16,Gadong,Chicken pie,36,3.20
+2026-03-16,Gadong,Baguette,30,3.00
+2026-03-16,Kiulap,Sourdough loaf,33,4.50
+2026-03-16,Kiulap,Butter croissant,50,2.80
+2026-03-16,Kiulap,Kuih lapis,43,1.50
+2026-03-16,Kiulap,Chicken pie,30,3.20
+2026-03-16,Kiulap,Baguette,23,3.00
+2026-03-16,Seria,Sourdough loaf,26,4.50
+2026-03-16,Seria,Butter croissant,35,2.80
+2026-03-16,Seria,Kuih lapis,32,1.50
+2026-03-16,Seria,Chicken pie,22,3.20
+2026-03-16,Seria,Baguette,17,3.00
+2026-03-17,Gadong,Sourdough loaf,38,4.50
+2026-03-17,Gadong,Butter croissant,55,2.80
+2026-03-17,Gadong,Kuih lapis,43,1.50
+2026-03-17,Gadong,Chicken pie,31,3.20
+2026-03-17,Gadong,Baguette,26,3.00
+2026-03-17,Kiulap,Sourdough loaf,30,4.50
+2026-03-17,Kiulap,Butter croissant,44,2.80
+2026-03-17,Kiulap,Kuih lapis,38,1.50
+2026-03-17,Kiulap,Chicken pie,26,3.20
+2026-03-17,Kiulap,Baguette,20,3.00
+2026-03-17,Seria,Sourdough loaf,23,4.50
+2026-03-17,Seria,Butter croissant,31,2.80
+2026-03-17,Seria,Kuih lapis,28,1.50
+2026-03-17,Seria,Chicken pie,18,3.20
+2026-03-17,Seria,Baguette,14,3.00
+2026-03-18,Gadong,Sourdough loaf,41,4.50
+2026-03-18,Gadong,Butter croissant,60,2.80
+2026-03-18,Gadong,Kuih lapis,48,1.50
+2026-03-18,Gadong,Chicken pie,35,3.20
+2026-03-18,Gadong,Baguette,29,3.00
+2026-03-18,Kiulap,Sourdough loaf,32,4.50
+2026-03-18,Kiulap,Butter croissant,48,2.80
+2026-03-18,Kiulap,Kuih lapis,42,1.50
+2026-03-18,Kiulap,Chicken pie,29,3.20
+2026-03-18,Kiulap,Baguette,22,3.00
+2026-03-18,Seria,Sourdough loaf,25,4.50
+2026-03-18,Seria,Butter croissant,34,2.80
+2026-03-18,Seria,Kuih lapis,31,1.50
+2026-03-18,Seria,Chicken pie,21,3.20
+2026-03-18,Seria,Baguette,16,3.00
+2026-03-19,Gadong,Sourdough loaf,44,4.50
+2026-03-19,Gadong,Butter croissant,64,2.80
+2026-03-19,Gadong,Kuih lapis,52,1.50
+2026-03-19,Gadong,Chicken pie,38,3.20
+2026-03-19,Gadong,Baguette,31,3.00
+2026-03-19,Kiulap,Sourdough loaf,34,4.50
+2026-03-19,Kiulap,Butter croissant,52,2.80
+2026-03-19,Kiulap,Kuih lapis,45,1.50
+2026-03-19,Kiulap,Chicken pie,31,3.20
+2026-03-19,Kiulap,Baguette,24,3.00
+2026-03-19,Seria,Sourdough loaf,27,4.50
+2026-03-19,Seria,Butter croissant,36,2.80
+2026-03-19,Seria,Kuih lapis,33,1.50
+2026-03-19,Seria,Chicken pie,23,3.20
+2026-03-19,Seria,Baguette,18,3.00
+2026-03-20,Gadong,Sourdough loaf,47,4.50
+2026-03-20,Gadong,Butter croissant,70,2.80
+2026-03-20,Gadong,Kuih lapis,56,1.50
+2026-03-20,Gadong,Chicken pie,41,3.20
+2026-03-20,Gadong,Baguette,34,3.00
+2026-03-20,Kiulap,Sourdough loaf,37,4.50
+2026-03-20,Kiulap,Butter croissant,57,2.80
+2026-03-20,Kiulap,Kuih lapis,49,1.50
+2026-03-20,Kiulap,Chicken pie,34,3.20
+2026-03-20,Kiulap,Baguette,27,3.00
+2026-03-20,Seria,Sourdough loaf,30,4.50
+2026-03-20,Seria,Butter croissant,40,2.80
+2026-03-20,Seria,Kuih lapis,36,1.50
+2026-03-20,Seria,Chicken pie,25,3.20
+2026-03-20,Seria,Baguette,20,3.00
+2026-03-21,Gadong,Sourdough loaf,54,4.50
+2026-03-21,Gadong,Butter croissant,78,2.80
+2026-03-21,Gadong,Kuih lapis,63,1.50
+2026-03-21,Gadong,Chicken pie,46,3.20
+2026-03-21,Gadong,Baguette,38,3.00
+2026-03-21,Kiulap,Sourdough loaf,43,4.50
+2026-03-21,Kiulap,Butter croissant,65,2.80
+2026-03-21,Kiulap,Kuih lapis,55,1.50
+2026-03-21,Kiulap,Chicken pie,39,3.20
+2026-03-21,Kiulap,Baguette,31,3.00
+2026-03-21,Seria,Sourdough loaf,35,4.50
+2026-03-21,Seria,Butter croissant,46,2.80
+2026-03-21,Seria,Kuih lapis,41,1.50
+2026-03-21,Seria,Chicken pie,29,3.20
+2026-03-21,Seria,Baguette,23,3.00
+2026-03-22,Gadong,Sourdough loaf,39,4.50
+2026-03-22,Gadong,Butter croissant,57,2.80
+2026-03-22,Gadong,Kuih lapis,45,1.50
+2026-03-22,Gadong,Chicken pie,33,3.20
+2026-03-22,Gadong,Baguette,27,3.00
+2026-03-22,Kiulap,Sourdough loaf,30,4.50
+2026-03-22,Kiulap,Butter croissant,46,2.80
+2026-03-22,Kiulap,Kuih lapis,39,1.50
+2026-03-22,Kiulap,Chicken pie,27,3.20
+2026-03-22,Kiulap,Baguette,20,3.00
+2026-03-22,Seria,Sourdough loaf,23,4.50
+2026-03-22,Seria,Butter croissant,32,2.80
+2026-03-22,Seria,Kuih lapis,29,1.50
+2026-03-22,Seria,Chicken pie,19,3.20
+2026-03-22,Seria,Baguette,14,3.00
+2026-03-23,Gadong,Sourdough loaf,41,4.50
+2026-03-23,Gadong,Butter croissant,60,2.80
+2026-03-23,Gadong,Kuih lapis,48,1.50
+2026-03-23,Gadong,Chicken pie,35,3.20
+2026-03-23,Gadong,Baguette,29,3.00
+2026-03-23,Kiulap,Sourdough loaf,32,4.50
+2026-03-23,Kiulap,Butter croissant,48,2.80
+2026-03-23,Kiulap,Kuih lapis,42,1.50
+2026-03-23,Kiulap,Chicken pie,29,3.20
+2026-03-23,Kiulap,Baguette,22,3.00
+2026-03-23,Seria,Sourdough loaf,25,4.50
+2026-03-23,Seria,Butter croissant,34,2.80
+2026-03-23,Seria,Kuih lapis,31,1.50
+2026-03-23,Seria,Chicken pie,21,3.20
+2026-03-23,Seria,Baguette,16,3.00
+2026-03-24,Gadong,Sourdough loaf,38,4.50
+2026-03-24,Gadong,Butter croissant,55,2.80
+2026-03-24,Gadong,Kuih lapis,43,1.50
+2026-03-24,Gadong,Chicken pie,31,3.20
+2026-03-24,Gadong,Baguette,26,3.00
+2026-03-24,Kiulap,Sourdough loaf,29,4.50
+2026-03-24,Kiulap,Butter croissant,44,2.80
+2026-03-24,Kiulap,Kuih lapis,38,1.50
+2026-03-24,Kiulap,Chicken pie,26,3.20
+2026-03-24,Kiulap,Baguette,20,3.00
+2026-03-24,Seria,Sourdough loaf,22,4.50
+2026-03-24,Seria,Butter croissant,31,2.80
+2026-03-24,Seria,Kuih lapis,28,1.50
+2026-03-24,Seria,Chicken pie,18,3.20
+2026-03-24,Seria,Baguette,14,3.00
+2026-03-25,Gadong,Sourdough loaf,43,4.50
+2026-03-25,Gadong,Butter croissant,63,2.80
+2026-03-25,Gadong,Kuih lapis,50,1.50
+2026-03-25,Gadong,Chicken pie,37,3.20
+2026-03-25,Gadong,Baguette,30,3.00
+2026-03-25,Kiulap,Sourdough loaf,34,4.50
+2026-03-25,Kiulap,Butter croissant,51,2.80
+2026-03-25,Kiulap,Kuih lapis,44,1.50
+2026-03-25,Kiulap,Chicken pie,30,3.20
+2026-03-25,Kiulap,Baguette,23,3.00
+2026-03-25,Seria,Sourdough loaf,26,4.50
+2026-03-25,Seria,Butter croissant,35,2.80
+2026-03-25,Seria,Kuih lapis,32,1.50
+2026-03-25,Seria,Chicken pie,22,3.20
+2026-03-25,Seria,Baguette,17,3.00
+2026-03-26,Gadong,Sourdough loaf,45,4.50
+2026-03-26,Gadong,Butter croissant,67,2.80
+2026-03-26,Gadong,Kuih lapis,54,1.50
+2026-03-26,Gadong,Chicken pie,39,3.20
+2026-03-26,Gadong,Baguette,32,3.00
+2026-03-26,Kiulap,Sourdough loaf,36,4.50
+2026-03-26,Kiulap,Butter croissant,54,2.80
+2026-03-26,Kiulap,Kuih lapis,47,1.50
+2026-03-26,Kiulap,Chicken pie,32,3.20
+2026-03-26,Kiulap,Baguette,25,3.00
+2026-03-26,Seria,Sourdough loaf,28,4.50
+2026-03-26,Seria,Butter croissant,38,2.80
+2026-03-26,Seria,Kuih lapis,34,1.50
+2026-03-26,Seria,Chicken pie,23,3.20
+2026-03-26,Seria,Baguette,18,3.00
+2026-03-27,Gadong,Sourdough loaf,48,4.50
+2026-03-27,Gadong,Butter croissant,72,2.80
+2026-03-27,Gadong,Kuih lapis,58,1.50
+2026-03-27,Gadong,Chicken pie,42,3.20
+2026-03-27,Gadong,Baguette,35,3.00
+2026-03-27,Kiulap,Sourdough loaf,38,4.50
+2026-03-27,Kiulap,Butter croissant,58,2.80
+2026-03-27,Kiulap,Kuih lapis,51,1.50
+2026-03-27,Kiulap,Chicken pie,35,3.20
+2026-03-27,Kiulap,Baguette,28,3.00
+2026-03-27,Seria,Sourdough loaf,31,4.50
+2026-03-27,Seria,Butter croissant,41,2.80
+2026-03-27,Seria,Kuih lapis,37,1.50
+2026-03-27,Seria,Chicken pie,26,3.20
+2026-03-27,Seria,Baguette,21,3.00
+2026-03-28,Gadong,Sourdough loaf,56,4.50
+2026-03-28,Gadong,Butter croissant,81,2.80
+2026-03-28,Gadong,Kuih lapis,66,1.50
+2026-03-28,Gadong,Chicken pie,48,3.20
+2026-03-28,Gadong,Baguette,40,3.00
+2026-03-28,Kiulap,Sourdough loaf,45,4.50
+2026-03-28,Kiulap,Butter croissant,68,2.80
+2026-03-28,Kiulap,Kuih lapis,58,1.50
+2026-03-28,Kiulap,Chicken pie,41,3.20
+2026-03-28,Kiulap,Baguette,33,3.00
+2026-03-28,Seria,Sourdough loaf,37,4.50
+2026-03-28,Seria,Butter croissant,48,2.80
+2026-03-28,Seria,Kuih lapis,43,1.50
+2026-03-28,Seria,Chicken pie,31,3.20
+2026-03-28,Seria,Baguette,25,3.00
+2026-03-29,Gadong,Sourdough loaf,40,4.50
+2026-03-29,Gadong,Butter croissant,58,2.80
+2026-03-29,Gadong,Kuih lapis,46,1.50
+2026-03-29,Gadong,Chicken pie,34,3.20
+2026-03-29,Gadong,Baguette,28,3.00
+2026-03-29,Kiulap,Sourdough loaf,31,4.50
+2026-03-29,Kiulap,Butter croissant,47,2.80
+2026-03-29,Kiulap,Kuih lapis,40,1.50
+2026-03-29,Kiulap,Chicken pie,28,3.20
+2026-03-29,Kiulap,Baguette,21,3.00
+2026-03-29,Seria,Sourdough loaf,24,4.50
+2026-03-29,Seria,Butter croissant,33,2.80
+2026-03-29,Seria,Kuih lapis,30,1.50
+2026-03-29,Seria,Chicken pie,20,3.20
+2026-03-29,Seria,Baguette,15,3.00
+2026-03-30,Gadong,Sourdough loaf,42,4.50
+2026-03-30,Gadong,Butter croissant,61,2.80
+2026-03-30,Gadong,Kuih lapis,49,1.50
+2026-03-30,Gadong,Chicken pie,36,3.20
+2026-03-30,Gadong,Baguette,30,3.00
+2026-03-30,Kiulap,Sourdough loaf,33,4.50
+2026-03-30,Kiulap,Butter croissant,50,2.80
+2026-03-30,Kiulap,Kuih lapis,43,1.50
+2026-03-30,Kiulap,Chicken pie,30,3.20
+2026-03-30,Kiulap,Baguette,23,3.00
+2026-03-30,Seria,Sourdough loaf,26,4.50
+2026-03-30,Seria,Butter croissant,35,2.80
+2026-03-30,Seria,Kuih lapis,32,1.50
+2026-03-30,Seria,Chicken pie,22,3.20
+2026-03-30,Seria,Baguette,17,3.00
