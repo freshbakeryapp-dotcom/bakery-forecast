@@ -17,7 +17,6 @@ def render_feedback_form():
     
     production_df = pd.read_csv(production_log_path)
     
-    # Filter to today's entries only — and deduplicate by taking latest per product per store
     today = datetime.now().strftime('%Y-%m-%d')
     today_production = production_df[production_df['date'] == today]
     
@@ -25,13 +24,10 @@ def render_feedback_form():
         st.info(f"No production log for today ({today}). Check back after you've saved a production plan for today.")
         return
     
-    # Keep only the most recent entry per store+product for today
     today_production = today_production.drop_duplicates(subset=['store', 'product'], keep='last')
     
-    # Create a running index to ensure unique keys
     counter = 0
     
-    # Group by store
     for store in sorted(today_production['store'].unique()):
         store_df = today_production[today_production['store'] == store]
         
@@ -41,19 +37,20 @@ def render_feedback_form():
         cols[0].markdown("**Product**")
         cols[1].markdown("**Baked This Morning**")
         cols[2].markdown("**Actually Sold**")
-        cols[3].markdown("**Wasted**")
+        cols[3].markdown("**Wasted** (auto)")
         
         feedback_data = []
         
         for _, row in store_df.iterrows():
             product = row['product']
             baked = int(row['baker_override'])
-            counter += 1  # Unique counter for every widget
+            counter += 1
             
             cols = st.columns([2, 1, 1, 1])
             cols[0].write(product)
             cols[1].write(str(baked))
             
+            # Only input is "Actually Sold" — capped at baked amount
             sold = cols[2].number_input(
                 label="Sold",
                 value=baked,
@@ -64,15 +61,9 @@ def render_feedback_form():
                 label_visibility="collapsed"
             )
             
-            wasted = cols[3].number_input(
-                label="Wasted",
-                value=baked - sold,
-                min_value=0,
-                max_value=baked,
-                step=1,
-                key=f"wasted_{counter}",
-                label_visibility="collapsed"
-            )
+            # Waste is auto-calculated, NOT an input
+            wasted = baked - sold
+            cols[3].markdown(f"**{wasted}**")
             
             feedback_data.append({
                 'date': today,
@@ -95,9 +86,9 @@ def render_feedback_form():
         compare_df = pd.read_csv(feedback_path)
         
         if not compare_df.empty:
-            total_wasted = compare_df['wasted'].sum()
             total_sold = compare_df['actually_sold'].sum()
-            total_baked = compare_df['baker_baked'].sum()
+            total_wasted = compare_df['wasted'].sum()
+            total_baked = total_sold + total_wasted
             waste_rate = (total_wasted / total_baked * 100) if total_baked > 0 else 0
             
             col1, col2, col3 = st.columns(3)
