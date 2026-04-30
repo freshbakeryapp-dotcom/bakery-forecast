@@ -2,123 +2,175 @@ import streamlit as st
 import pandas as pd
 import os
 from datetime import datetime
+from src.clean_data import clean_pos_data
 
 def render_feedback_form():
-    """Display end-of-day form to log actual sales and waste."""
+    """End-of-day: upload today's sales CSV, auto-compare with production plan."""
     
-    st.subheader("📝 End-of-Day Sales & Waste Log")
-    st.write("Log what actually happened today to improve tomorrow's forecast.")
+    st.subheader("📝 End-of-Day Sales Upload")
+    st.write("Upload today's POS sales CSV. The system will compare against this morning's production plan automatically.")
     
     production_log_path = "data/logs/production_log.csv"
     
     if not os.path.exists(production_log_path):
-        st.warning("No production log found yet. Generate tomorrow's plan first with overrides saved.")
+        st.warning("No production log found yet. Generate and save tomorrow's plan first.")
         return
     
     production_df = pd.read_csv(production_log_path)
-    
     today = datetime.now().strftime('%Y-%m-%d')
-    today_production = production_df[production_df['date'] == today]
+    today_plan = production_df[production_df['date'] == today]
     
-    if today_production.empty:
-        st.info(f"No production log for today ({today}). Check back after you've saved a production plan for today.")
+    if today_plan.empty:
+        st.info(f"No production plan saved for today ({today}). Save a plan in Tab 1 first.")
         return
     
-    today_production = today_production.drop_duplicates(subset=['store', 'product'], keep='last')
+    # Upload today's sales
+    sales_file = st.file_uploader("Upload Today's Sales CSV", type=["csv"], key="daily_sales")
     
-    counter = 0
+    if sales_file is not None:
+        raw_df = pd.read_csv(sales_file)
+        sales_df = clean_pos_data(raw_df)
+        
+        st.success(f"✅ Received today's sales: {len(sales_df)} rows")
+        st.dataframe(sales_df.head(10))
+        
+        if st.button("🔍 Compare with Production Plan", type="primary"):
+            comparison = compare_plan_vs_sales(today_plan, sales_df)
+            
+            if comparison is not None:
+                st.subheader("📊 Today's Comparison: Plan vs Actual")
+                
+                # Show per-store breakdown
+                for store in sorted(comparison['store'].unique()):
+                    store_data = comparison[comparison['store'] == store]
+                    
+                    st.markdown(f"### 📍 {store}")
+                    
+                    display_df = store_data[['product', 'ai_recommended', 'baker_baked', 'actually_sold', 'wasted']].copy()
+                    display_df.columns = ['Product', 'AI Rec', 'Baked', 'Sold', 'Wasted']
+                    
+                    # Highlight problem rows
+                    def highlight_waste(val):
+                        if val > 0:
+                            return 'background-color: #ffcccc'
+                        return ''
+                    
+                    styled = display_df.style.applymap(highlight_waste, subset=['Wasted'])
+                    st.dataframe(styled, use_container_width=True, hide_index=True)
+                
+                # Save results
+                if st.button("💾 Save Today's Results", type="primary"):
+                    save_feedback(comparison)
+                    st.success("✅ Today's results saved.")
+                
+                # Show cumulative performance
+                show_cumulative_performance()
+            else:
+                st.error("Could not match production plan with sales data. Check that product and store names match.")
+
+    else:
+        st.info("👆 Upload today's POS sales CSV to compare with the production plan.")
     
-    for store in sorted(today_production['store'].unique()):
-        store_df = today_production[today_production['store'] == store]
-        
-        st.markdown(f"### 📍 {store}")
-        
-        cols = st.columns([2, 1, 1, 1])
-        cols[0].markdown("**Product**")
-        cols[1].markdown("**Baked This Morning**")
-        cols[2].markdown("**Actually Sold**")
-        cols[3].markdown("**Wasted** (auto)")
-        
-        feedback_data = []
-        
-        for _, row in store_df.iterrows():
-            product = row['product']
-            baked = int(row['baker_override'])
-            counter += 1
-            
-            cols = st.columns([2, 1, 1, 1])
-            cols[0].write(product)
-            cols[1].write(str(baked))
-            
-            # Only input is "Actually Sold" — capped at baked amount
-            sold = cols[2].number_input(
-                label="Sold",
-                value=baked,
-                min_value=0,
-                max_value=baked,
-                step=1,
-                key=f"sold_{counter}",
-                label_visibility="collapsed"
-            )
-            
-            # Waste is auto-calculated, NOT an input
-            wasted = baked - sold
-            cols[3].markdown(f"**{wasted}**")
-            
-            feedback_data.append({
-                'date': today,
-                'store': store,
-                'product': product,
-                'ai_recommended': int(row['ai_recommended']),
-                'baker_baked': baked,
-                'actually_sold': sold,
-                'wasted': wasted
-            })
-        
-        if st.button(f"💾 Log {store} Sales & Waste", key=f"save_feedback_{store}_{counter}"):
-            save_feedback(feedback_data)
-            st.success(f"✅ Logged today's data for {store}.")
-    
-    # Show comparison if feedback exists
+    # Always show cumulative if data exists
     feedback_path = "data/logs/feedback_log.csv"
     if os.path.exists(feedback_path):
-        st.subheader("📊 AI Performance So Far")
-        compare_df = pd.read_csv(feedback_path)
+        st.markdown("---")
+        show_cumulative_performance()
+
+
+def compare_plan_vs_sales(production_plan, sales_df):
+    """Match production plan against actual sales and calculate waste."""
+    
+    results = []
+    
+    for _, plan_row in production_plan.iterrows():
+        store = plan_row['store']
+        product = plan_row['product']
+        ai_rec = int(plan_row['ai_recommended'])
+        baked = int(plan_row['baker_override'])
         
-        if not compare_df.empty:
-            total_sold = compare_df['actually_sold'].sum()
-            total_wasted = compare_df['wasted'].sum()
-            total_baked = total_sold + total_wasted
-            waste_rate = (total_wasted / total_baked * 100) if total_baked > 0 else 0
-            
-            col1, col2, col3 = st.columns(3)
-            col1.metric("Total Baked", f"{total_baked:,}")
-            col2.metric("Total Sold", f"{total_sold:,}")
-            col3.metric("Waste Rate", f"{waste_rate:.1f}%")
-            
-            st.markdown("#### Would AI Have Wasted Less?")
-            
-            ai_waste_estimate = (compare_df['ai_recommended'] - compare_df['actually_sold']).clip(lower=0).sum()
-            baker_waste_actual = compare_df['wasted'].sum()
-            
-            col1, col2 = st.columns(2)
-            col1.metric("AI Estimated Waste", f"{int(ai_waste_estimate):,}")
-            col2.metric("Baker Actual Waste", f"{int(baker_waste_actual):,}")
-            
-            improvement = baker_waste_actual - ai_waste_estimate
-            if improvement > 0:
-                st.success(f"✅ AI would have reduced waste by {int(improvement)} units ({int(improvement/total_baked*100)}% improvement)")
-            elif improvement < 0:
-                st.warning(f"⚠️ Baker performed better by {abs(int(improvement))} units")
-            else:
-                st.info("AI and baker performed equally.")
+        # Find matching sales row
+        match = sales_df[
+            (sales_df['store'].str.lower() == store.lower()) &
+            (sales_df['product'].str.lower() == product.lower())
+        ]
+        
+        if match.empty:
+            sold = 0  # No sales logged = sold 0
+        else:
+            sold = int(match['quantity_sold'].sum())
+        
+        wasted = max(0, baked - sold)
+        
+        results.append({
+            'date': plan_row['date'],
+            'store': store,
+            'product': product,
+            'ai_recommended': ai_rec,
+            'baker_baked': baked,
+            'actually_sold': sold,
+            'wasted': wasted
+        })
+    
+    if not results:
+        return None
+    
+    return pd.DataFrame(results)
+
+
+def show_cumulative_performance():
+    """Display cumulative AI vs Baker performance from saved feedback."""
+    
+    feedback_path = "data/logs/feedback_log.csv"
+    if not os.path.exists(feedback_path):
+        return
+    
+    compare_df = pd.read_csv(feedback_path)
+    
+    if compare_df.empty:
+        return
+    
+    st.subheader("📊 AI Performance — All Time")
+    
+    total_sold = compare_df['actually_sold'].sum()
+    total_wasted = compare_df['wasted'].sum()
+    total_baked = compare_df['baker_baked'].sum()
+    waste_rate = (total_wasted / total_baked * 100) if total_baked > 0 else 0
+    
+    col1, col2, col3 = st.columns(3)
+    col1.metric("Total Baked", f"{int(total_baked):,}")
+    col2.metric("Total Sold", f"{int(total_sold):,}")
+    col3.metric("Waste Rate", f"{waste_rate:.1f}%")
+    
+    st.markdown("#### Would AI Have Wasted Less?")
+    
+    ai_waste_estimate = (compare_df['ai_recommended'] - compare_df['actually_sold']).clip(lower=0).sum()
+    baker_waste_actual = compare_df['wasted'].sum()
+    
+    col1, col2 = st.columns(2)
+    col1.metric("AI Estimated Waste", f"{int(ai_waste_estimate):,}")
+    col2.metric("Baker Actual Waste", f"{int(baker_waste_actual):,}")
+    
+    days = compare_df['date'].nunique()
+    improvement = baker_waste_actual - ai_waste_estimate
+    
+    if improvement > 0:
+        st.success(f"✅ Over {days} day(s), AI would have reduced waste by {int(improvement)} units")
+    elif improvement < 0:
+        st.warning(f"⚠️ Baker performed better by {abs(int(improvement))} units")
+    else:
+        st.info("AI and baker performed equally.")
 
 
 def save_feedback(feedback_data):
     """Save feedback to CSV."""
     os.makedirs("data/logs", exist_ok=True)
     
-    df = pd.DataFrame(feedback_data)
+    if isinstance(feedback_data, list):
+        df = pd.DataFrame(feedback_data)
+    else:
+        df = feedback_data
+    
     filepath = "data/logs/feedback_log.csv"
     
     if os.path.exists(filepath):
