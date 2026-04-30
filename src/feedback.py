@@ -61,9 +61,11 @@ def render_feedback_form():
                 # Save results
                 if st.button("💾 Save Today's Results", type="primary"):
                     save_feedback(comparison)
-                    st.success("✅ Today's results saved.")
+                    st.success("✅ Today's results saved. Scroll down to see updated AI vs Baker comparison.")
+                    st.balloons()
                 
                 # Show cumulative performance
+                st.markdown("---")
                 show_cumulative_performance()
             else:
                 st.error("Could not match production plan with sales data. Check that product and store names match.")
@@ -71,11 +73,14 @@ def render_feedback_form():
     else:
         st.info("👆 Upload today's POS sales CSV to compare with the production plan.")
     
-    # Always show cumulative if data exists
+        # Always show cumulative if data exists
     feedback_path = "data/logs/feedback_log.csv"
     if os.path.exists(feedback_path):
         st.markdown("---")
+        st.markdown("## 📊 All-Time Performance")
         show_cumulative_performance()
+    else:
+        st.info("No saved results yet. Upload today's sales and click 'Save Today's Results' to start tracking performance.")
 
 
 def compare_plan_vs_sales(production_plan, sales_df):
