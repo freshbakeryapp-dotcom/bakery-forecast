@@ -3,8 +3,34 @@ import pandas as pd
 import os
 from datetime import datetime
 from src.clean_data import clean_pos_data
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
+import json
 
-FEEDBACK_PATH = "data/logs/feedback_log.csv"
+# Google Sheets setup
+SHEET_ID = "1UZV0MzfGZ4yu-bFkDytqg7CEkkLu79cWVK0lxR-KrZc"  # <-- Replace this
+
+def get_sheet():
+    """Connect to Google Sheets and return the feedback worksheet."""
+    scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+    
+    # Load credentials from the JSON file
+    creds_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "credentials.json")
+    creds = ServiceAccountCredentials.from_json_keyfile_name(creds_path, scope)
+    client = gspread.authorize(creds)
+    
+    sheet = client.open_by_key(SHEET_ID)
+    
+    # Get or create the "Feedback" worksheet
+    try:
+        worksheet = sheet.worksheet("Feedback")
+    except gspread.WorksheetNotFound:
+        worksheet = sheet.add_worksheet(title="Feedback", rows="1000", cols="8")
+        # Add header row
+        worksheet.append_row(["date", "store", "product", "ai_recommended", "baker_baked", "actually_sold", "wasted"])
+    
+    return worksheet
+
 
 def render_feedback_form():
     """End-of-day: upload today's sales CSV, auto-compare with production plan."""
@@ -12,22 +38,11 @@ def render_feedback_form():
     st.subheader("📝 End-of-Day Sales Upload")
     st.write("Upload today's POS sales CSV. The system will compare against this morning's production plan automatically.")
     
-    # ---- RESTORE PREVIOUS SESSION DATA ----
-    st.markdown("#### 💾 Restore Previous Data (Optional)")
-    restore_file = st.file_uploader("Upload your saved results CSV to continue tracking", type=["csv"], key="restore_feedback")
-    
-    if restore_file is not None:
-        restore_df = pd.read_csv(restore_file)
-        os.makedirs("data/logs", exist_ok=True)
-        restore_df.to_csv(FEEDBACK_PATH, index=False)
-        st.success(f"✅ Restored {len(restore_df)} days of previous results.")
-    # ----------------------------------------
-    
     production_log_path = "data/logs/production_log.csv"
     
     if not os.path.exists(production_log_path):
         st.warning("No production log found yet. Generate and save tomorrow's plan first in Tab 1.")
-        _show_download_section()
+        show_cumulative_performance()
         return
     
     production_df = pd.read_csv(production_log_path)
@@ -36,10 +51,9 @@ def render_feedback_form():
     
     if today_plan.empty:
         st.info(f"No production plan saved for today ({today}). Save a plan in Tab 1 first.")
-        _show_download_section()
+        show_cumulative_performance()
         return
     
-    # Upload today's sales
     sales_file = st.file_uploader("Upload Today's Sales CSV", type=["csv"], key="daily_sales")
     
     if sales_file is not None:
@@ -72,40 +86,19 @@ def render_feedback_form():
                     st.dataframe(styled, use_container_width=True, hide_index=True)
                 
                 if st.button("💾 Save Today's Results", type="primary"):
-                    save_feedback(comparison)
-                    st.success("✅ Today's results saved.")
+                    save_feedback_to_sheets(comparison)
+                    st.success("✅ Today's results saved permanently to Google Sheets.")
                     st.balloons()
                 
                 st.markdown("---")
                 show_cumulative_performance()
             else:
                 st.error("Could not match production plan with sales data. Check that product and store names match.")
+    else:
+        st.info("👆 Upload today's POS sales CSV to compare with the production plan.")
     
-    # Always show cumulative + download if data exists
-    if os.path.exists(FEEDBACK_PATH):
-        st.markdown("---")
-        show_cumulative_performance()
-    
-    _show_download_section()
-
-
-def _show_download_section():
-    """Show download button for saved performance data."""
-    if os.path.exists(FEEDBACK_PATH):
-        st.markdown("---")
-        st.markdown("### 📥 Export Your Performance Data")
-        st.write("Download your saved results so you can restore them next session.")
-        
-        df = pd.read_csv(FEEDBACK_PATH)
-        csv_data = df.to_csv(index=False)
-        
-        st.download_button(
-            label="⬇️ Download Results CSV",
-            data=csv_data,
-            file_name=f"bakery_performance_{datetime.now().strftime('%Y%m%d')}.csv",
-            mime="text/csv",
-        )
-        st.caption("Next time you use the app, upload this file in the 'Restore Previous Data' section at the top.")
+    st.markdown("---")
+    show_cumulative_performance()
 
 
 def compare_plan_vs_sales(production_plan, sales_df):
@@ -147,17 +140,67 @@ def compare_plan_vs_sales(production_plan, sales_df):
     return pd.DataFrame(results)
 
 
+def save_feedback_to_sheets(comparison_df):
+    """Save feedback data to Google Sheets."""
+    try:
+        worksheet = get_sheet()
+        for _, row in comparison_df.iterrows():
+            worksheet.append_row([
+                str(row['date']),
+                row['store'],
+                row['product'],
+                int(row['ai_recommended']),
+                int(row['baker_baked']),
+                int(row['actually_sold']),
+                int(row['wasted'])
+            ])
+    except Exception as e:
+        st.error(f"Could not save to Google Sheets: {e}")
+        # Fallback: save locally too
+        save_feedback_local(comparison_df)
+
+
+def save_feedback_local(feedback_data):
+    """Fallback: save to local CSV if sheets fails."""
+    os.makedirs("data/logs", exist_ok=True)
+    
+    if isinstance(feedback_data, list):
+        df = pd.DataFrame(feedback_data)
+    else:
+        df = feedback_data
+    
+    filepath = "data/logs/feedback_log.csv"
+    if os.path.exists(filepath):
+        existing = pd.read_csv(filepath)
+        df = pd.concat([existing, df], ignore_index=True)
+    
+    df.to_csv(filepath, index=False)
+
+
+def load_feedback_from_sheets():
+    """Load all feedback data from Google Sheets."""
+    try:
+        worksheet = get_sheet()
+        records = worksheet.get_all_records()
+        if records:
+            return pd.DataFrame(records)
+    except Exception:
+        pass
+    
+    # Fallback: load local CSV
+    if os.path.exists("data/logs/feedback_log.csv"):
+        return pd.read_csv("data/logs/feedback_log.csv")
+    
+    return pd.DataFrame()
+
+
 def show_cumulative_performance():
-    """Display cumulative AI vs Baker performance from saved feedback."""
+    """Display cumulative AI vs Baker performance from Google Sheets."""
     
-    if not os.path.exists(FEEDBACK_PATH):
-        st.info("No saved results yet.")
-        return
-    
-    compare_df = pd.read_csv(FEEDBACK_PATH)
+    compare_df = load_feedback_from_sheets()
     
     if compare_df.empty:
-        st.info("No saved results yet.")
+        st.info("No saved results yet. Upload today's sales and click 'Save Today's Results' to start tracking.")
         return
     
     st.subheader("📊 AI Performance — All Time")
@@ -190,19 +233,14 @@ def show_cumulative_performance():
         st.warning(f"⚠️ Baker performed better by {abs(int(improvement))} units")
     else:
         st.info("AI and baker performed equally.")
+    
+    st.caption("💾 Data stored permanently in Google Sheets — survives restarts and redeploys.")
 
 
 def save_feedback(feedback_data):
-    """Save feedback to CSV."""
-    os.makedirs("data/logs", exist_ok=True)
-    
-    if isinstance(feedback_data, list):
-        df = pd.DataFrame(feedback_data)
+    """Legacy function — redirects to sheets."""
+    if isinstance(feedback_data, pd.DataFrame):
+        save_feedback_to_sheets(feedback_data)
     else:
-        df = feedback_data
-    
-    if os.path.exists(FEEDBACK_PATH):
-        existing = pd.read_csv(FEEDBACK_PATH)
-        df = pd.concat([existing, df], ignore_index=True)
-    
-    df.to_csv(FEEDBACK_PATH, index=False)
+        df = pd.DataFrame(feedback_data)
+        save_feedback_to_sheets(df)
