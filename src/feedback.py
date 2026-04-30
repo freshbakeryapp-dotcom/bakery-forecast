@@ -55,7 +55,7 @@ def render_feedback_form():
                             return 'background-color: #ffcccc'
                         return ''
                     
-                    styled = display_df.style.applymap(highlight_waste, subset=['Wasted'])
+                    styled = display_df.style.map(highlight_waste, subset=['Wasted'])
                     st.dataframe(styled, use_container_width=True, hide_index=True)
                 
                 # Save results
