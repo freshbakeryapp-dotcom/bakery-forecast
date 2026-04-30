@@ -4,16 +4,30 @@ import os
 from datetime import datetime
 from src.clean_data import clean_pos_data
 
+FEEDBACK_PATH = "data/logs/feedback_log.csv"
+
 def render_feedback_form():
     """End-of-day: upload today's sales CSV, auto-compare with production plan."""
     
     st.subheader("📝 End-of-Day Sales Upload")
     st.write("Upload today's POS sales CSV. The system will compare against this morning's production plan automatically.")
     
+    # ---- RESTORE PREVIOUS SESSION DATA ----
+    st.markdown("#### 💾 Restore Previous Data (Optional)")
+    restore_file = st.file_uploader("Upload your saved results CSV to continue tracking", type=["csv"], key="restore_feedback")
+    
+    if restore_file is not None:
+        restore_df = pd.read_csv(restore_file)
+        os.makedirs("data/logs", exist_ok=True)
+        restore_df.to_csv(FEEDBACK_PATH, index=False)
+        st.success(f"✅ Restored {len(restore_df)} days of previous results.")
+    # ----------------------------------------
+    
     production_log_path = "data/logs/production_log.csv"
     
     if not os.path.exists(production_log_path):
-        st.warning("No production log found yet. Generate and save tomorrow's plan first.")
+        st.warning("No production log found yet. Generate and save tomorrow's plan first in Tab 1.")
+        _show_download_section()
         return
     
     production_df = pd.read_csv(production_log_path)
@@ -22,6 +36,7 @@ def render_feedback_form():
     
     if today_plan.empty:
         st.info(f"No production plan saved for today ({today}). Save a plan in Tab 1 first.")
+        _show_download_section()
         return
     
     # Upload today's sales
@@ -40,7 +55,6 @@ def render_feedback_form():
             if comparison is not None:
                 st.subheader("📊 Today's Comparison: Plan vs Actual")
                 
-                # Show per-store breakdown
                 for store in sorted(comparison['store'].unique()):
                     store_data = comparison[comparison['store'] == store]
                     
@@ -49,38 +63,49 @@ def render_feedback_form():
                     display_df = store_data[['product', 'ai_recommended', 'baker_baked', 'actually_sold', 'wasted']].copy()
                     display_df.columns = ['Product', 'AI Rec', 'Baked', 'Sold', 'Wasted']
                     
-                    # Highlight problem rows
                     def highlight_waste(val):
-                        if val > 0:
+                        if isinstance(val, (int, float)) and val > 0:
                             return 'background-color: #ffcccc'
                         return ''
                     
                     styled = display_df.style.map(highlight_waste, subset=['Wasted'])
                     st.dataframe(styled, use_container_width=True, hide_index=True)
                 
-                # Save results
                 if st.button("💾 Save Today's Results", type="primary"):
                     save_feedback(comparison)
-                    st.success("✅ Today's results saved. Scroll down to see updated AI vs Baker comparison.")
+                    st.success("✅ Today's results saved.")
                     st.balloons()
                 
-                # Show cumulative performance
                 st.markdown("---")
                 show_cumulative_performance()
             else:
                 st.error("Could not match production plan with sales data. Check that product and store names match.")
-
-    else:
-        st.info("👆 Upload today's POS sales CSV to compare with the production plan.")
     
-        # Always show cumulative if data exists
-    feedback_path = "data/logs/feedback_log.csv"
-    if os.path.exists(feedback_path):
+    # Always show cumulative + download if data exists
+    if os.path.exists(FEEDBACK_PATH):
         st.markdown("---")
-        st.markdown("## 📊 All-Time Performance")
         show_cumulative_performance()
-    else:
-        st.info("No saved results yet. Upload today's sales and click 'Save Today's Results' to start tracking performance.")
+    
+    _show_download_section()
+
+
+def _show_download_section():
+    """Show download button for saved performance data."""
+    if os.path.exists(FEEDBACK_PATH):
+        st.markdown("---")
+        st.markdown("### 📥 Export Your Performance Data")
+        st.write("Download your saved results so you can restore them next session.")
+        
+        df = pd.read_csv(FEEDBACK_PATH)
+        csv_data = df.to_csv(index=False)
+        
+        st.download_button(
+            label="⬇️ Download Results CSV",
+            data=csv_data,
+            file_name=f"bakery_performance_{datetime.now().strftime('%Y%m%d')}.csv",
+            mime="text/csv",
+        )
+        st.caption("Next time you use the app, upload this file in the 'Restore Previous Data' section at the top.")
 
 
 def compare_plan_vs_sales(production_plan, sales_df):
@@ -94,14 +119,13 @@ def compare_plan_vs_sales(production_plan, sales_df):
         ai_rec = int(plan_row['ai_recommended'])
         baked = int(plan_row['baker_override'])
         
-        # Find matching sales row
         match = sales_df[
             (sales_df['store'].str.lower() == store.lower()) &
             (sales_df['product'].str.lower() == product.lower())
         ]
         
         if match.empty:
-            sold = 0  # No sales logged = sold 0
+            sold = 0
         else:
             sold = int(match['quantity_sold'].sum())
         
@@ -126,13 +150,14 @@ def compare_plan_vs_sales(production_plan, sales_df):
 def show_cumulative_performance():
     """Display cumulative AI vs Baker performance from saved feedback."""
     
-    feedback_path = "data/logs/feedback_log.csv"
-    if not os.path.exists(feedback_path):
+    if not os.path.exists(FEEDBACK_PATH):
+        st.info("No saved results yet.")
         return
     
-    compare_df = pd.read_csv(feedback_path)
+    compare_df = pd.read_csv(FEEDBACK_PATH)
     
     if compare_df.empty:
+        st.info("No saved results yet.")
         return
     
     st.subheader("📊 AI Performance — All Time")
@@ -176,10 +201,8 @@ def save_feedback(feedback_data):
     else:
         df = feedback_data
     
-    filepath = "data/logs/feedback_log.csv"
-    
-    if os.path.exists(filepath):
-        existing = pd.read_csv(filepath)
+    if os.path.exists(FEEDBACK_PATH):
+        existing = pd.read_csv(FEEDBACK_PATH)
         df = pd.concat([existing, df], ignore_index=True)
     
-    df.to_csv(filepath, index=False)
+    df.to_csv(FEEDBACK_PATH, index=False)
